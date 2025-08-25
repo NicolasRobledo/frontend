@@ -1,24 +1,23 @@
-name: Deploy Frontend Remoto
+name: Deploy Frontend Remoto  # Nombre del workflow
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main"]  # Se ejecuta al hacer push a main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Runner de Ubuntu
 
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Trae el código del repo
 
-      - name: Copiar archivos al servidor via SSH
-        uses: appleboy/ssh-action@v0.1.7
+      - name: Desplegar via SSH
+        uses: appleboy/ssh-action@v0.1.7  # Conecta y ejecuta comandos en el servidor
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          host: ${{ secrets.SERVER_IP }}       # IP del servidor
+          username: ${{ secrets.SERVER_USER }} # Usuario SSH
+          password: ${{ secrets.SERVER_PASS }} # Contraseña SSH
           script: |
-            mkdir -p /var/www/html/
-            cp index.html /var/www/html/
-
+            cd /home/usuario/frontend  # Ir al directorio del frontend
+            ./deploy.sh               # Ejecutar el script de despliegue
